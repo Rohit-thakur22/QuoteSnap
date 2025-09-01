@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Keyboard, Platform, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ProfileSvg from "../../assets/profilegreensvg.svg"
+import HomeSvg from "../../assets/homesquid.svg"
+import HeartSvg from "../../assets/heartsvg.svg"
+import DailySvg from "../../assets/daily.svg"
 
 // Icons
 
@@ -40,8 +43,8 @@ function BottomTab() {
           styles.tabWrapper,
           isKeyboardVisible && Platform.OS === "android" ? { display: "none" } : null,
         ],
-        tabBarActiveTintColor: "#00FF00",
-        tabBarInactiveTintColor: "#fff",
+        tabBarActiveTintColor: "#9810fa",
+        tabBarInactiveTintColor: "#b0b4bd",
         tabBarLabelStyle: {
           fontSize: 12,
           fontFamily: "Poppins-Regular",
@@ -55,9 +58,9 @@ function BottomTab() {
           tabBarLabel: "Home",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <ProfileSvg width={24} height={24} />
+              <HomeSvg width={24} height={24} />
             ) : (
-              <ProfileSvg width={24} height={24} />
+              <HomeSvg width={24} height={24} />
             ),
         }}
       />
@@ -76,14 +79,14 @@ function BottomTab() {
       ],
       tabBarIcon: ({ focused }) =>
         focused ? (
-          <ProfileSvg width={24} height={24} />
+          <DailySvg width={24} height={24} />
         ) : (
-          <ProfileSvg width={24} height={24} />
+          <DailySvg width={24} height={24} />
         ),
     };
   }}
 />
-{/* <Tab.Screen
+<Tab.Screen
   name="Favorites"
   component={Favorite}
   options={({ route }) => {
@@ -97,15 +100,15 @@ function BottomTab() {
       ],
       tabBarIcon: ({ focused }) =>
         focused ? (
-          <ProfileSvg width={24} height={24} />
+          <HeartSvg width={24} height={24} />
         ) : (
-          <ProfileSvg width={24} height={24} />
+          <HeartSvg width={24} height={24} />
         ),
     };
   }}
-/> */}
+/>
 
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
@@ -117,7 +120,7 @@ function BottomTab() {
               <ProfileSvg width={24} height={24} />
             ),
         }}
-      /> */}
+      />
     </Tab.Navigator>
   );
 }
@@ -127,7 +130,6 @@ const getRouteName = (route:any) =>{
 
   console.log("routeName" , routeName);
   
-
   if(routeName?.includes("EmployeeDetail") || routeName?.includes("CompanyDetail") ||  routeName?.includes("EditSlots") ||  routeName?.includes("AssignTimeSlot") ){
     return "none"
   }
@@ -139,11 +141,11 @@ export default BottomTab;
 const styles = StyleSheet.create({
   tabWrapper: {
     // borderTopColor: COLORS.primary,
-    backgroundColor: "#2A2F2F",
+    backgroundColor: "#ffffffff",
     borderTopWidth: 2,
     borderColor:"#fd74b1",
     // borderTopColor: "red", // green line
-    height: 90,
+    height: Platform.OS === "ios" ? 90 : 70,
     paddingTop:9,
     paddingBottom: Platform.OS === "ios" ? 10 : 10,
   },

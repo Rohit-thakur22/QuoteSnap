@@ -56,8 +56,9 @@ export default function Profile() {
               “Spreading positivity, one quote at a time ✨”
             </Text>
           </View>
-          <TouchableOpacity>
-            <EditSvg width={20} height={20} />
+          <TouchableOpacity style={{ flexDirection: "row", gap: 8, borderWidth: 2, borderColor: "#e5e7eb", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4, alignItems: "center" }}>
+            <EditSvg width={10} height={10} />
+            <Text>Edit</Text>
           </TouchableOpacity>
         </View>
 

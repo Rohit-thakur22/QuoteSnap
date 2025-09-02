@@ -9,10 +9,18 @@ import {
   ScrollView,
 } from "react-native";
 import ScreenWrapper from "../../wrapper/ScreenWrapper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 const SettingsScreen = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
+  const navigation = useNavigation()
+
+  const handlePress = async ()=>{
+    navigation.navigate("Onboarding")
+    await AsyncStorage.clear()
+  }
 
   return (
     <ScreenWrapper>
@@ -97,7 +105,7 @@ const SettingsScreen = () => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.item}>
+          <TouchableOpacity style={styles.item} onPress={handlePress}>
             <View style={styles.itemLeft}>
               {/* <Icon name="log-out-outline" size={20} color="#F44336" /> */}
               <View style={styles.itemTextWrapper}>

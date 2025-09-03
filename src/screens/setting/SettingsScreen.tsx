@@ -11,6 +11,7 @@ import {
 import ScreenWrapper from "../../wrapper/ScreenWrapper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { Fonts } from "../../utils/fonts";
 
 const SettingsScreen = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -122,7 +123,7 @@ const SettingsScreen = () => {
 
         {/* Footer */}
         <View style={styles.footer}>
-          <Text style={styles.footerText}>QuoteVibe v1.0.0</Text>
+          <Text style={styles.footerText}>QuoteSnap v1.0.0</Text>
           <Text style={styles.footerText}>
             Made with <Text style={{ color: "red" }}>❤</Text> for quote lovers
           </Text>
@@ -138,8 +139,8 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 20,
-    fontWeight: "bold",
     marginBottom: 16,
+    fontFamily:Fonts.Brothers,
   },
   section: {
     backgroundColor: "white",
@@ -153,6 +154,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     color: "gray",
+    fontFamily:Fonts.PoppinsRegular,
     marginBottom: 8,
   },
   item: {
@@ -176,11 +178,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     color: "#222",
+    fontFamily:Fonts.PoppinsBold
   },
   itemSubtitle: {
     fontSize: 12,
     color: "gray",
     marginTop: 2,
+    fontFamily:Fonts.PoppinsRegular
   },
   footer: {
     alignItems: "center",
@@ -188,6 +192,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 12,
+    fontFamily:Fonts.PoppinsBold,
     color: "gray",
   },
 });

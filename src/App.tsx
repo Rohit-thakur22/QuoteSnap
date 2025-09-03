@@ -6,10 +6,10 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import BottomTab from "./navigation/bottomTab/BottomTab";
 import CreateQuoteScreen from "./screens/createQuoteScreen/CreateQuoteScreen";
 import ShareHistory from "./screens/shareHistoryScreen/ShareHistoryScreen";
-import FriendlyQuotesScreen from "./screens/friendlyQuotesScreen/FriendlyQuotesScreen";
 import SettingsScreen from "./screens/setting/SettingsScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import OnboardingScreen from "./screens/onboardingScreen/OnboardingScreen";
+import QuotesScreen from "./screens/QuotesScreen/QuotesScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -51,7 +51,7 @@ function App() {
           <Stack.Screen name="MainTabs" component={BottomTab} />
           <Stack.Screen name="createQuoteScreen" component={CreateQuoteScreen} />
           <Stack.Screen name="shareHistory" component={ShareHistory} />
-          <Stack.Screen name="friendlyQuotesScreen" component={FriendlyQuotesScreen} />
+          <Stack.Screen name="QuotesScreen" component={QuotesScreen} />
           <Stack.Screen name="settingsScreen" component={SettingsScreen} />
         </Stack.Navigator>
       </NavigationContainer>

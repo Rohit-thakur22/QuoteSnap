@@ -12,13 +12,14 @@ import {
   Animated,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+import { Fonts } from "../../utils/fonts";
 
 const { width, height } = Dimensions.get("window");
 
 const slides = [
   {
     id: "1",
-    title: "Welcome to QuoteVibe",
+    title: "Welcome to QuoteSnap",
     subtitle:
       "Your daily dose of inspiration, motivation, and beautiful quotes awaits you",
     emoji: "✨",
@@ -197,6 +198,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 14,
     fontWeight: "600",
+    fontFamily:Fonts.PoppinsRegular,
+
   },
   iconBox: {
     width: 80,
@@ -214,9 +217,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     color: "#fff",
-    fontWeight: "700",
+    // fontWeight: "700",
     textAlign: "center",
     marginBottom: 12,
+    fontFamily:Fonts.Brothers
   },
   subtitle: {
     fontSize: 14,
@@ -225,11 +229,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     lineHeight: 20,
     opacity: 0.9,
+    fontFamily:Fonts.PoppinsRegular
   },
   input: {
     width: "80%",
     borderWidth: 1,
     borderColor: "#fff",
+    fontFamily:Fonts.PoppinsRegular,
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 16,
@@ -266,5 +272,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
     fontSize: 16,
+    fontFamily:Fonts.PoppinsRegular,
+
   },
 });

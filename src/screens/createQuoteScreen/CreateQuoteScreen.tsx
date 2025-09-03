@@ -1,4 +1,4 @@
-// CreateQuoteScreen.tsx
+
 import React, { useState } from "react";
 import {
   View,
@@ -14,6 +14,7 @@ import InspirationSvg from "../../assets/createquote.svg";
 import LinearGradient from "react-native-linear-gradient"; // expo-linear-gradient for button bg
 import DropDownPicker from "react-native-dropdown-picker"; // for category dropdown
 import ScreenWrapper from "../../wrapper/ScreenWrapper";
+import { Fonts } from "../../utils/fonts";
 
 export default function CreateQuoteScreen() {
   const navigation = useNavigation();
@@ -100,27 +101,30 @@ export default function CreateQuoteScreen() {
           />
 
           {/* Category */}
-         <View style={[styles.formCard, { zIndex: 1000, elevation: 1000 }]}>
+       <View style={{ zIndex: 1000, elevation: 1000, marginBottom: open ? 200 : 16 }}>
   <Text style={styles.label}>Category *</Text>
   <DropDownPicker
-    open={open}
-    value={category}
-    items={[
-      { label: "Motivation", value: "motivation" },
-      { label: "Friendship", value: "friendship" },
-      { label: "Success", value: "success" },
-      { label: "Funny", value: "Funny" },
-      { label: "Romantic", value: "Romantic" },
-      { label: "Attitude", value: "attitude" },
-      { label: "Wisdom", value: "wisdom" },
-      { label: "Sad", value: "sad" },
-    ]}
-    setOpen={setOpen}
-    setValue={setCategory}
-    style={styles.dropdown}
-    placeholder="Choose a category"
-    dropDownContainerStyle={styles.dropdownContainer}
-  />
+  open={open}
+  value={category}
+  items={[
+    { label: "Motivation", value: "motivation" },
+    { label: "Friendship", value: "friendship" },
+    { label: "Success", value: "success" },
+    { label: "Funny", value: "Funny" },
+    { label: "Romantic", value: "Romantic" },
+    { label: "Attitude", value: "attitude" },
+    { label: "Wisdom", value: "wisdom" },
+    { label: "Sad", value: "sad" },
+  ]}
+  setOpen={setOpen}
+  setValue={setCategory}
+  style={styles.dropdown}
+  placeholder="Choose a category"
+  dropDownContainerStyle={styles.dropdownContainer}
+  textStyle={{ fontFamily: Fonts.PoppinsRegular, fontSize: 14 }}   // 👈 fixes selected value
+  labelStyle={{ fontFamily: Fonts.PoppinsRegular, fontSize: 14 }} // 👈 fixes list items
+/>
+
 </View>
 
         </View>
@@ -158,8 +162,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 12,
   },
-  headerTitle: { fontSize: 18, fontWeight: "600", marginLeft: 8 },
-  subHeader: { fontSize: 14, color: "#666", marginBottom: 10 },
+  headerTitle: { fontSize: 18, fontWeight: "600", marginLeft: 8  ,     fontFamily:Fonts.Brothers,},
+  subHeader: {
+     fontSize: 14,
+      color: "#666",
+    fontFamily:Fonts.PoppinsBold,
+
+       marginBottom: 10 ,
+      },
 
   inspirationCard: {
     backgroundColor: "#fff",
@@ -168,14 +178,21 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     elevation: 2,
   },
-  sectionTitle: { fontSize: 15, fontWeight: "600", marginBottom: 10 },
+  sectionTitle: { 
+    fontSize: 15, 
+    fontWeight: "600",
+    fontFamily:Fonts.Brothers,
+    marginBottom: 10 },
   inspirationBtn: {
     backgroundColor: "#f3e8ff",
     borderRadius: 10,
     padding: 10,
     marginBottom: 8,
   },
-  inspirationText: { fontSize: 13, color: "#4c1d95" },
+  inspirationText: {
+     fontSize: 13,
+     fontFamily:Fonts.PoppinsRegular,
+      color: "#4c1d95" },
 
   formCard: {
     backgroundColor: "#fff",
@@ -184,26 +201,38 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     elevation: 2,
   },
-  label: { fontSize: 13, fontWeight: "500", marginTop: 10, marginBottom: 4 },
+  label: { 
+    fontSize: 13,
+     fontWeight: "500",
+      marginTop: 10, 
+      fontFamily:Fonts.PoppinsRegular,
+      marginBottom: 4 },
   textArea: {
     backgroundColor: "#f9fafb",
     borderRadius: 10,
     padding: 10,
     minHeight: 80,
     textAlignVertical: "top",
+    fontFamily:Fonts.PoppinsRegular,
     fontSize: 14,
   },
-  charCount: { fontSize: 11, color: "#999", marginTop: 4 },
+  charCount: { 
+    fontSize: 11,
+    fontFamily:Fonts.PoppinsRegular,
+     color: "#999",
+     marginTop: 4 },
   input: {
     backgroundColor: "#f9fafb",
     borderRadius: 10,
     padding: 10,
+    fontFamily:Fonts.PoppinsRegular,
     fontSize: 14,
   },
  dropdown: {
   borderRadius: 10,
   backgroundColor: "#f9fafb",
   borderColor: "#ddd",
+  fontFamily:Fonts.PoppinsRegular,
   marginTop: 4,
   zIndex: 1000, // <--- added
 },
@@ -224,7 +253,8 @@ dropdownContainer: {
   },
   previewText: {
     fontSize: 14,
-    fontStyle: "italic",
+   
+    fontFamily:Fonts.PoppinsRegular,
     color: "#333",
     marginTop: 6,
   },
@@ -249,5 +279,8 @@ dropdownContainer: {
     borderRadius: 30,
     alignItems: "center",
   },
-  buttonText: { color: "#fff", fontWeight: "600", fontSize: 16 },
+  buttonText: {
+     color: "#fff", 
+    fontFamily:Fonts.PoppinsRegular,
+      fontSize: 16 },
 });

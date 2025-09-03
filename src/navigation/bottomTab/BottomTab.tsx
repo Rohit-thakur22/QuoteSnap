@@ -1,19 +1,21 @@
-
 import React, { useEffect, useState } from "react";
-import { Keyboard, Platform, StyleSheet } from "react-native";
+import { Keyboard, Platform, StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import ProfileSvg from "../../assets/profilegreensvg.svg"
-import HomeSvg from "../../assets/homesquid.svg"
-import HeartSvg from "../../assets/heartsvg.svg"
-import DailySvg from "../../assets/daily.svg"
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import LinearGradient from "react-native-linear-gradient";
 
 // Icons
+import ProfileSvg from "../../assets/profilegreensvg.svg";
+import HomeSvg from "../../assets/homesquid.svg";
+import HeartSvg from "../../assets/heartsvg.svg";
+import DailySvg from "../../assets/daily.svg";
 
-import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+// Screens
 import Home from "../../screens/home/Home";
 import Favorite from "../../screens/favorite/Favorite";
 import Profile from "../../screens/profile/Profile";
 import Daily from "../../screens/daily/Daily";
+import { Fonts } from "../../utils/fonts";
 
 const Tab = createBottomTabNavigator();
 
@@ -38,17 +40,44 @@ function BottomTab() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        animation:"fade",
+        animation: "fade",
+
+        // Hide tab bar when keyboard opens
         tabBarStyle: [
           styles.tabWrapper,
-          isKeyboardVisible && Platform.OS === "android" ? { display: "none" } : null,
+          isKeyboardVisible && Platform.OS === "android"
+            ? { display: "none" }
+            : null,
         ],
+
+        // Text colors
         tabBarActiveTintColor: "#9810fa",
         tabBarInactiveTintColor: "#b0b4bd",
+
+        // Font style
         tabBarLabelStyle: {
           fontSize: 12,
-          fontFamily: "Poppins-Regular",
+          fontFamily: Fonts.PoppinsRegular,
         },
+
+        // Custom background with gradient border
+        tabBarBackground: () => (
+          <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+            {/* Gradient Top Border */}
+            <LinearGradient
+              colors={["#f472b6", "#a855f7"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 2, // border thickness
+              }}
+            />
+          </View>
+        ),
       }}
     >
       <Tab.Screen
@@ -56,97 +85,76 @@ function BottomTab() {
         component={Home}
         options={{
           tabBarLabel: "Home",
-          tabBarIcon: ({ focused }) =>
-            focused ? (
-              <HomeSvg width={24} height={24} />
-            ) : (
-              <HomeSvg width={24} height={24} />
-            ),
+          tabBarIcon: () => <HomeSvg width={24} height={24} />,
         }}
       />
 
       <Tab.Screen
-  name="Daily"
-  component={Daily}
-  options={({ route }) => {
-    const display = getRouteName(route);
+        name="Daily"
+        component={Daily}
+        options={({ route }) => {
+          const display = getRouteName(route);
+          return {
+            tabBarLabel: "Daily",
+            tabBarStyle: [
+              styles.tabWrapper,
+              display === "none" ? { display: "none" } : null,
+            ],
+            tabBarIcon: () => <DailySvg width={24} height={24} />,
+          };
+        }}
+      />
 
-    return {
-      tabBarLabel: "Daily",
-      tabBarStyle: [
-        styles.tabWrapper,   // <-- keep base style
-        display === "none" ? { display: "none" } : null,
-      ],
-      tabBarIcon: ({ focused }) =>
-        focused ? (
-          <DailySvg width={24} height={24} />
-        ) : (
-          <DailySvg width={24} height={24} />
-        ),
-    };
-  }}
-/>
-<Tab.Screen
-  name="Favorites"
-  component={Favorite}
-  options={({ route }) => {
-    const display = getRouteName(route);
-
-    return {
-      tabBarLabel: "Favorites",
-      tabBarStyle: [
-        styles.tabWrapper,   // <-- keep base style
-        display === "none" ? { display: "none" } : null,
-      ],
-      tabBarIcon: ({ focused }) =>
-        focused ? (
-          <HeartSvg width={24} height={24} />
-        ) : (
-          <HeartSvg width={24} height={24} />
-        ),
-    };
-  }}
-/>
+      <Tab.Screen
+        name="Favorites"
+        component={Favorite}
+        options={({ route }) => {
+          const display = getRouteName(route);
+          return {
+            tabBarLabel: "Favorites",
+            tabBarStyle: [
+              styles.tabWrapper,
+              display === "none" ? { display: "none" } : null,
+            ],
+            tabBarIcon: () => <HeartSvg width={24} height={24} />,
+          };
+        }}
+      />
 
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
           tabBarLabel: "Profile",
-          tabBarIcon: ({ focused }) =>
-            focused ? (
-              <ProfileSvg width={24} height={24} />
-            ) : (
-              <ProfileSvg width={24} height={24} />
-            ),
+          tabBarIcon: () => <ProfileSvg width={24} height={24} />,
         }}
       />
     </Tab.Navigator>
   );
 }
 
-const getRouteName = (route:any) =>{
-  const routeName = getFocusedRouteNameFromRoute(route)
+const getRouteName = (route: any) => {
+  const routeName = getFocusedRouteNameFromRoute(route);
 
-  console.log("routeName" , routeName);
-  
-  if(routeName?.includes("EmployeeDetail") || routeName?.includes("CompanyDetail") ||  routeName?.includes("EditSlots") ||  routeName?.includes("AssignTimeSlot") ){
-    return "none"
+  if (
+    routeName?.includes("EmployeeDetail") ||
+    routeName?.includes("CompanyDetail") ||
+    routeName?.includes("EditSlots") ||
+    routeName?.includes("AssignTimeSlot")
+  ) {
+    return "none";
   }
-  return 'flex'
-}
+  return "flex";
+};
 
 export default BottomTab;
 
 const styles = StyleSheet.create({
   tabWrapper: {
-    // borderTopColor: COLORS.primary,
-    backgroundColor: "#ffffffff",
-    borderTopWidth: 2,
-    borderColor:"#fd74b1",
-    // borderTopColor: "red", // green line
+    backgroundColor: "#ffffff",
+    borderTopWidth: 0, // disable default border
     height: Platform.OS === "ios" ? 90 : 70,
-    paddingTop:9,
+    paddingTop: 9,
     paddingBottom: Platform.OS === "ios" ? 10 : 10,
   },
 });

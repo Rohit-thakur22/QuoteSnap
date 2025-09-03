@@ -1,4 +1,4 @@
-// FriendlyQuotesScreen.tsx
+// QuotesScreen.tsx
 import React, { useState } from "react";
 import {
   View,
@@ -9,40 +9,29 @@ import {
   TextInput,
   Share,
 } from "react-native";
-import ScreenWrapper from "../../wrapper/ScreenWrapper";
-import CopySvg from "../../assets/copy.svg"
-import BackSvg from "../../assets/arrowback.svg"
-import ShareSvg from "../../assets/share.svg"
-import HeartSvg from "../../assets/heartsvg.svg"
+import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import Clipboard from "@react-native-clipboard/clipboard";
+import ScreenWrapper from "../../wrapper/ScreenWrapper";
+import { Category, Quote, quotesData } from "../../json/quotesData"; // ✅ import JSON
+import CopySvg from "../../assets/copy.svg";
+import BackSvg from "../../assets/arrowback.svg";
+import ShareSvg from "../../assets/share.svg";
+import HeartSvg from "../../assets/heartsvg.svg";
+import { Fonts } from "../../utils/fonts";
 
-const quotesData = [
-  {
-    id: "1",
-    text: "A true friend is someone who thinks you are good egg even though he knows you are slightly cracked.",
-  },
-  {
-    id: "2",
-    text: "Friendship is the only cement that will ever hold the world together.",
-  },
-  {
-    id: "3",
-    text: "Good friends are like stars. You dont always see them, but you know they are always there.",
-  },
-  {
-    id: "4",
-    text: "A friend is one who knows you and loves you just the same.",
-  },
-  {
-    id: "5",
-    text: "Friends are the family you choose for yourself.",
-  },
-];
+const QuotesScreen = () => {
+  const route = useRoute<RouteProp<{ params: { category: Category } }, "params">>();
+const { category } = route?.params;
 
-const FriendlyQuotesScreen = () => {
-  const [search, setSearch] = useState("");
-  const [favorites, setFavorites] = useState<string[]>([]);
+const [search, setSearch] = useState("");
+const [favorites, setFavorites] = useState<string[]>([]);
 
+const navigation = useNavigation()
+
+const allQuotes: Quote[] = quotesData[category]; // ✅ now TypeScript is happy
+const filteredQuotes = allQuotes.filter((q) =>
+  q.text.toLowerCase().includes(search.toLowerCase())
+);
   const toggleFavorite = (id: string) => {
     setFavorites((prev) =>
       prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
@@ -55,33 +44,24 @@ const FriendlyQuotesScreen = () => {
 
   const handleShare = async (text: string) => {
     try {
-      await Share.share({
-        message: text,
-      });
+      await Share.share({ message: text });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const filteredQuotes = quotesData.filter((q) =>
-    q.text.toLowerCase().includes(search.toLowerCase())
-  );
-
   const renderQuote = ({ item }: { item: any }) => (
     <View style={styles.card}>
       <Text style={styles.quoteText}>“{item.text}”</Text>
-
       <View style={styles.actionsRow}>
-        {/* Copy Button */}
         <TouchableOpacity
           style={[styles.button, { backgroundColor: "#E3F2FD" }]}
           onPress={() => handleCopy(item.text)}
         >
-          <CopySvg width={22} height={22}  />
+          <CopySvg width={22} height={22} />
           <Text style={styles.buttonText}>Copy</Text>
         </TouchableOpacity>
 
-        {/* Share Button */}
         <TouchableOpacity
           style={[styles.button, { backgroundColor: "#E8F5E9" }]}
           onPress={() => handleShare(item.text)}
@@ -90,9 +70,12 @@ const FriendlyQuotesScreen = () => {
           <Text style={styles.buttonText}>Share</Text>
         </TouchableOpacity>
 
-        {/* Favorite Button */}
         <TouchableOpacity onPress={() => toggleFavorite(item.id)}>
-          <HeartSvg width={22} height={22} />
+          <HeartSvg
+            width={22}
+            height={22}
+            fill={favorites.includes(item.id) ? "red" : "gray"}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -102,17 +85,16 @@ const FriendlyQuotesScreen = () => {
     <ScreenWrapper>
       <View style={styles.container}>
         {/* Header */}
-        <View style={{display:"flex"   , flexDirection: "row" , gap:6}}>
- <View>
-           <BackSvg width={22} height={22}  />
+        <View style={{ flexDirection: "row", gap: 6 }}>
+          <TouchableOpacity  hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} onPress={()=>navigation.goBack()}>
+          <BackSvg width={22} height={22} />
+
+          </TouchableOpacity>
+          <View>
+            <Text style={styles.header}>{category}</Text>
+            <Text style={styles.subHeader}>{filteredQuotes.length} quotes</Text>
+          </View>
         </View>
-        <View >
-<Text style={styles.header}>Friendly</Text>
-        <Text style={styles.subHeader}>{filteredQuotes.length} quotes</Text>
-        
-        </View>
-        </View>
-       
 
         {/* Search Bar */}
         <TextInput
@@ -127,9 +109,8 @@ const FriendlyQuotesScreen = () => {
           data={filteredQuotes}
           keyExtractor={(item) => item.id}
           renderItem={renderQuote}
-           showsHorizontalScrollIndicator={false} 
-           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 20 }}
+          showsVerticalScrollIndicator={false}
         />
       </View>
     </ScreenWrapper>
@@ -137,19 +118,9 @@ const FriendlyQuotesScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 2,
-  },
-  subHeader: {
-    fontSize: 14,
-    color: "gray",
-    marginBottom: 12,
-  },
+  container: { flex: 1 },
+  header: { fontSize: 20, marginBottom: 2 , fontFamily:Fonts.Brothers},
+  subHeader: { fontSize: 14, color: "gray", marginBottom: 12 , fontFamily:Fonts.PoppinsRegular, },
   searchInput: {
     borderWidth: 1,
     borderColor: "#ddd",
@@ -157,6 +128,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     marginBottom: 16,
+    fontFamily:Fonts.PoppinsRegular,
   },
   card: {
     backgroundColor: "white",
@@ -165,11 +137,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     elevation: 2,
   },
-  quoteText: {
-    fontSize: 14,
-    marginBottom: 12,
-    color: "#333",
-  },
+  quoteText: { fontSize: 14, marginBottom: 12, color: "#333" , fontFamily:Fonts.PoppinsRegular, },
   actionsRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -183,11 +151,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginRight: 6,
   },
-  buttonText: {
-    fontSize: 12,
-    marginLeft: 4,
-    fontWeight: "600",
-  },
+  buttonText: { fontSize: 12, marginLeft: 4, fontWeight: "600" , fontFamily:Fonts.PoppinsRegular, },
 });
 
-export default FriendlyQuotesScreen;
+export default QuotesScreen;

@@ -21,6 +21,7 @@ import CreateQuoteSvg from "../../assets/createquote.svg";
 import HistorySvg from "../../assets/history.svg";
 import BadgeSvg from "../../assets/badge.svg";
 import ScreenWrapper from "../../wrapper/ScreenWrapper";
+import { Fonts } from "../../utils/fonts";
 
 export default function Profile() {
   const navigation = useNavigation();
@@ -58,7 +59,7 @@ export default function Profile() {
           </View>
           <TouchableOpacity style={{ flexDirection: "row", gap: 8, borderWidth: 2, borderColor: "#e5e7eb", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4, alignItems: "center" }}>
             <EditSvg width={10} height={10} />
-            <Text>Edit</Text>
+            <Text style={{fontFamily:Fonts.PoppinsRegular,}}>Edit</Text>
           </TouchableOpacity>
         </View>
 
@@ -92,14 +93,14 @@ export default function Profile() {
         <Text style={styles.sectionTitle}>Quick Actions</Text>
         <TouchableOpacity style={styles.actionCard} onPress={()=>handleCreatePress("createQuoteScreen")} >
           <CreateQuoteSvg width={22} height={22} />
-          <View style={{ marginLeft: 12 }}>
+          <View style={{ marginLeft: 12 , gap:4 }}>
             <Text style={styles.actionTitle}>Create New Quote</Text>
             <Text style={styles.actionSubtitle}>Share your wisdom</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionCard} onPress={()=>handleCreatePress("shareHistory")}>
           <HistorySvg width={22} height={22} />
-          <View style={{ marginLeft: 12 }}>
+          <View style={{ marginLeft: 12 , gap:4}}>
             <Text style={styles.actionTitle}>Share History</Text>
             <Text style={styles.actionSubtitle}>View shared quotes</Text>
           </View>
@@ -108,7 +109,7 @@ export default function Profile() {
         {/* Badge Section */}
         <View style={styles.badgeCard}>
           <BadgeSvg width={28} height={28} />
-          <View style={{ marginLeft: 12 }}>
+          <View style={{ marginLeft: 12 , gap:4 }}>
             <Text style={styles.badgeTitle}>Quote Enthusiast</Text>
             <Text style={styles.badgeSubtitle}>
               You’ve shared 0 quotes!
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 12,
   },
-  headerTitle: { fontSize: 18, fontWeight: "600", marginLeft: 8 },
+  headerTitle: { fontSize: 18, fontWeight: "600", marginLeft: 8 , fontFamily:Fonts.Brothers, },
 
   profileCard: {
     flexDirection: "row",
@@ -146,9 +147,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   avatarText: { color: "#fff", fontWeight: "700", fontSize: 18 },
-  username: { fontSize: 16, fontWeight: "600", color: "#111" },
-  joined: { fontSize: 13, color: "#666" },
-  bio: { fontSize: 13, color: "#444", marginTop: 6, fontStyle: "italic" },
+  username: { fontSize: 16, fontWeight: "600", color: "#111" , fontFamily:Fonts.Brothers },
+  joined: { fontSize: 13, color: "#666" , fontFamily:Fonts.PoppinsRegular, },
+  bio: { fontSize: 13, color: "#444", marginTop: 6  , fontFamily:Fonts.PoppinsRegular,},
 
   gridRow: { flexDirection: "row", justifyContent: "space-between" },
   statCard: {
@@ -158,12 +159,13 @@ const styles = StyleSheet.create({
     margin: 4,
     alignItems: "center",
   },
-  statValue: { fontSize: 16, fontWeight: "700", marginVertical: 4 },
-  statLabel: { fontSize: 13, color: "#444" },
+  statValue: { fontSize: 16, marginVertical: 4 , fontFamily:Fonts.PoppinsRegular, },
+  statLabel: { fontSize: 13, color: "#444" , fontFamily:Fonts.PoppinsRegular, },
 
   sectionTitle: {
     fontSize: 15,
     fontWeight: "600",
+    fontFamily:Fonts.Brothers,
     marginVertical: 10,
     color: "#111",
   },
@@ -176,8 +178,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     elevation: 1,
   },
-  actionTitle: { fontSize: 14, fontWeight: "600", color: "#111" },
-  actionSubtitle: { fontSize: 12, color: "#666" },
+  actionTitle: { fontSize: 14, fontWeight: "600", color: "#111" , fontFamily:Fonts.Brothers, },
+  actionSubtitle: { fontSize: 12, color: "#666" , fontFamily:Fonts.PoppinsRegular, },
 
   badgeCard: {
     flexDirection: "row",
@@ -188,6 +190,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     elevation: 1,
   },
-  badgeTitle: { fontSize: 15, fontWeight: "600", color: "#111" },
-  badgeSubtitle: { fontSize: 13, color: "#666" },
+  badgeTitle: { fontSize: 15, fontWeight: "600", color: "#111"  , fontFamily:Fonts.Brothers,},
+  badgeSubtitle: { fontSize: 13, color: "#666" , fontFamily:Fonts.PoppinsRegular, },
 });

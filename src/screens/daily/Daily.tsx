@@ -15,9 +15,13 @@ import StarSvg from "../../assets/star.svg";
 import CopySvg from "../../assets/copy.svg";
 import ShareSvg from "../../assets/share.svg";
 import HeartSvg from "../../assets/heartsvg.svg";
+import { Fonts } from "../../utils/fonts";
+import { useNavigation } from "@react-navigation/native";
 
 export default function FeaturedQuotes() {
   const [activeTab, setActiveTab] = useState<"daily" | "trending">("daily");
+
+  const navigation = useNavigation()
 
   const todayQuotes = [
     {
@@ -50,7 +54,10 @@ export default function FeaturedQuotes() {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Header */}
         <View style={styles.header}>
+         <TouchableOpacity  hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} onPress={()=>navigation.goBack()}>
+
           <BackArrowSvg width={24} height={24} />
+             </TouchableOpacity>
           <Text style={styles.headerTitle}>Featured Quotes</Text>
         </View>
         <Text style={styles.dateText}>Monday, September 1, 2025</Text>
@@ -188,8 +195,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginLeft: 8,
     color: "#222",
+    fontFamily:Fonts.Brothers,
   },
-  dateText: { fontSize: 14, color: "#666", marginBottom: 12 },
+  dateText: { fontSize: 14, color: "#666", marginBottom: 12 , fontFamily:Fonts.PoppinsRegular, },
 
   tabs: {
     flexDirection: "row",
@@ -205,7 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   activeTab: { backgroundColor: "#fff", elevation: 2 },
-  tabText: { fontSize: 14, color: "#666" },
+  tabText: { fontSize: 14, color: "#666" , fontFamily:Fonts.PoppinsRegular, },
   activeTabText: { color: "#000", fontWeight: "600" },
 
   quoteCard: {
@@ -215,17 +223,18 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   quoteHeader: { flexDirection: "row", alignItems: "center", marginBottom: 8 },
-  quoteHeaderText: { color: "#fff", fontSize: 12, marginLeft: 4 },
-  quoteText: { fontSize: 16, color: "#fff", fontWeight: "500", marginBottom: 8 },
-  authorText: { fontSize: 14, color: "#fff", fontStyle: "italic" },
+  quoteHeaderText: { color: "#fff", fontSize: 12, marginLeft: 4 , fontFamily:Fonts.PoppinsRegular, },
+  quoteText: { fontSize: 16, color: "#fff", fontWeight: "500", marginBottom: 8 , fontFamily:Fonts.PoppinsRegular, },
+  authorText: { fontSize: 14, color: "#fff", fontStyle: "italic" , fontFamily:Fonts.PoppinsRegular, },
 
   sectionTitle: {
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 6,
+    fontFamily:Fonts.Brothers,
     color: "#333",
   },
-  subText: { fontSize: 13, color: "#777", marginBottom: 12 },
+  subText: { fontSize: 13, color: "#777", marginBottom: 12 , },
 
   card: {
     backgroundColor: "#fff",
@@ -234,8 +243,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     elevation: 2,
   },
-  quoteTextSmall: { fontSize: 14, color: "#222", marginBottom: 6 },
-  authorSmall: { fontSize: 13, color: "#666", fontStyle: "italic" },
+  quoteTextSmall: { fontSize: 14, color: "#222", marginBottom: 6 , fontFamily:Fonts.PoppinsRegular, },
+  authorSmall: { fontSize: 13, color: "#666", fontStyle: "italic" , fontFamily:Fonts.PoppinsRegular, },
 
   actions: {
     flexDirection: "row",
@@ -246,8 +255,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginRight: 16,
+    
   },
-  actionText: { marginLeft: 4, fontSize: 13, color: "#3b82f6" },
+  actionText: { marginLeft: 4, fontSize: 13, color: "#3b82f6"  , fontFamily:Fonts.PoppinsRegular,},
 
   trendingRow: {
     flexDirection: "row",

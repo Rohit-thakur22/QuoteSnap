@@ -14,6 +14,7 @@ import CopySvg from "../../assets/copy.svg";
 import ShareSvg from "../../assets/share.svg";
 import HeartSvg from "../../assets/heartsvg.svg";
 import ScreenWrapper from "../../wrapper/ScreenWrapper";
+import { Fonts } from "../../utils/fonts";
 
 export default function FavoritesScreen() {
   const navigation = useNavigation();
@@ -92,11 +93,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginLeft: 8,
     color: "#111",
+    fontFamily:Fonts.Brothers,
   },
   headerSubtitle: {
     fontSize: 14,
     color: "#666",
     marginLeft: "auto",
+    fontFamily:Fonts.PoppinsRegular,
   },
 
   card: {
@@ -110,6 +113,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#222",
     marginBottom: 10,
+    fontFamily:Fonts.PoppinsRegular,
   },
 
   actions: {
@@ -125,5 +129,6 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     fontSize: 13,
     fontWeight: "500",
+    fontFamily:Fonts.PoppinsRegular,
   },
 });

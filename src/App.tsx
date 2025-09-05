@@ -37,24 +37,8 @@ function App() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          {/* {firstLaunch && (
-            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-          )} */}
-            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-          <Stack.Screen name="MainTabs" component={BottomTab} />
-          <Stack.Screen name="createQuoteScreen" component={CreateQuoteScreen} />
-          <Stack.Screen name="shareHistory" component={ShareHistory} />
-          <Stack.Screen name="QuotesScreen" component={QuotesScreen} />
-          <Stack.Screen name="settingsScreen" component={SettingsScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      {/* <AppContent /> */}
     </SafeAreaProvider>
   );
 }

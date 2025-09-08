@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Keyboard, Platform, StyleSheet, View } from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import LinearGradient from "react-native-linear-gradient";
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from "react-native-reanimated";
 
-// Icons
-import ProfileSvg from "../../assets/profilegreensvg.svg";
+// Icons (can be SVG or from react-native-vector-icons)
 import HomeSvg from "../../assets/homesquid.svg";
 import HeartSvg from "../../assets/heartsvg.svg";
+import ProfileSvg from "../../assets/profilegreensvg.svg";
 import DailySvg from "../../assets/daily.svg";
 
 // Screens
@@ -20,141 +20,182 @@ import { Fonts } from "../../utils/fonts";
 const Tab = createBottomTabNavigator();
 
 function BottomTab() {
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
-  useEffect(() => {
-    const showListener = Keyboard.addListener("keyboardDidShow", () =>
-      setKeyboardVisible(true)
-    );
-    const hideListener = Keyboard.addListener("keyboardDidHide", () =>
-      setKeyboardVisible(false)
-    );
-
-    return () => {
-      showListener.remove();
-      hideListener.remove();
-    };
-  }, []);
-
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        animation: "fade",
-
-        // Hide tab bar when keyboard opens
-        tabBarStyle: [
-          styles.tabWrapper,
-          isKeyboardVisible && Platform.OS === "android"
-            ? { display: "none" }
-            : null,
-        ],
-
-        // Text colors
-        tabBarActiveTintColor: "#9810fa",
-        tabBarInactiveTintColor: "#b0b4bd",
-
-        // Font style
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontFamily: Fonts.PoppinsRegular,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: Platform.OS === "ios" ? 80 : 70,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          backgroundColor: "#fff",
+          elevation: 8,
         },
-
-        // Custom background with gradient border
-        tabBarBackground: () => (
-          <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
-            {/* Gradient Top Border */}
-            <LinearGradient
-              colors={["#f472b6", "#a855f7"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: 2, // border thickness
-              }}
-            />
-          </View>
-        ),
       }}
     >
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: "Home",
-          tabBarIcon: () => <HomeSvg width={24} height={24} />,
+          tabBarButton: (props) => (
+            <AnimatedTabButton {...props} label="Home" Icon={HomeSvg} />
+          ),
         }}
       />
-
       <Tab.Screen
         name="Daily"
         component={Daily}
-        options={({ route }) => {
-          const display = getRouteName(route);
-          return {
-            tabBarLabel: "Daily",
-            tabBarStyle: [
-              styles.tabWrapper,
-              display === "none" ? { display: "none" } : null,
-            ],
-            tabBarIcon: () => <DailySvg width={24} height={24} />,
-          };
+        options={{
+          tabBarButton: (props) => (
+            <AnimatedTabButton {...props} label="Daily" Icon={DailySvg} />
+          ),
+        }}
+      />
+
+      {/* Floating Center Button */}
+      <Tab.Screen
+        name="Add"
+        component={Daily}
+        options={{
+          tabBarButton: (props) => <AnimatedCenterButton {...props} />,
         }}
       />
 
       <Tab.Screen
         name="Favorites"
         component={Favorite}
-        options={({ route }) => {
-          const display = getRouteName(route);
-          return {
-            tabBarLabel: "Favorites",
-            tabBarStyle: [
-              styles.tabWrapper,
-              display === "none" ? { display: "none" } : null,
-            ],
-            tabBarIcon: () => <HeartSvg width={24} height={24} />,
-          };
+        options={{
+          tabBarButton: (props) => (
+            <AnimatedTabButton {...props} label="Favorites" Icon={HeartSvg} />
+          ),
         }}
       />
-
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: "Profile",
-          tabBarIcon: () => <ProfileSvg width={24} height={24} />,
+          tabBarButton: (props) => (
+            <AnimatedTabButton {...props} label="Profile" Icon={ProfileSvg} />
+          ),
         }}
       />
     </Tab.Navigator>
   );
 }
 
-const getRouteName = (route: any) => {
-  const routeName = getFocusedRouteNameFromRoute(route);
+// 🔹 Tab Button with Reanimated Animations
+function AnimatedTabButton({ onPress, label, Icon, accessibilityState }: any) {
+  const focused = accessibilityState?.selected ?? false;
+  const scale = useSharedValue(focused ? 1.2 : 1);
+  const translateY = useSharedValue(focused ? -5 : 0);
 
-  if (
-    routeName?.includes("EmployeeDetail") ||
-    routeName?.includes("CompanyDetail") ||
-    routeName?.includes("EditSlots") ||
-    routeName?.includes("AssignTimeSlot")
-  ) {
-    return "none";
-  }
-  return "flex";
-};
+  React.useEffect(() => {
+    scale.value = withSpring(focused ? 1.2 : 1, { damping: 12, stiffness: 120 });
+    translateY.value = withSpring(focused ? -5 : 0, { damping: 12, stiffness: 120 });
+  }, [focused]);
 
-export default BottomTab;
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }, { translateY: translateY.value }],
+  }));
+
+  return (
+    <TouchableOpacity activeOpacity={0.9} onPress={onPress} style={styles.tabButton}>
+      <Animated.View style={[animatedStyle]}>
+        {focused ? (
+          <LinearGradient colors={["#f472b6", "#ec4899"]} style={styles.activeCircle}>
+            <Icon width={24} height={24} fill="#fff" />
+          </LinearGradient>
+        ) : (
+          <Icon width={24} height={24} fill="#999" />
+        )}
+      </Animated.View>
+      <Animated.Text
+        style={[
+          styles.label,
+          { color: focused ? "#ec4899" : "#999" },
+          animatedStyle,
+        ]}
+      >
+        {label}
+      </Animated.Text>
+    </TouchableOpacity>
+  );
+}
+
+// 🔹 Floating Center Button
+function AnimatedCenterButton({ onPress }: any) {
+  const scale = useSharedValue(1);
+
+  const handlePress = () => {
+    scale.value = withSpring(0.85, { damping: 5, stiffness: 150 }, () => {
+      scale.value = withSpring(1, { damping: 5, stiffness: 150 });
+    });
+
+    onPress?.();
+  };
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  return (
+    <Animated.View style={[styles.centerWrapper, animatedStyle]}>
+      <TouchableOpacity onPress={handlePress} activeOpacity={0.9}>
+        <LinearGradient colors={["#f472b6", "#ec4899"]} style={styles.centerButton}>
+          <Text style={styles.plus}>+</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    </Animated.View>
+  );
+}
 
 const styles = StyleSheet.create({
-  tabWrapper: {
-    backgroundColor: "#ffffff",
-    borderTopWidth: 0, // disable default border
-    height: Platform.OS === "ios" ? 90 : 70,
-    paddingTop: 9,
-    paddingBottom: Platform.OS === "ios" ? 10 : 10,
+  tabButton: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    top: 5,
+  },
+  label: {
+    fontSize: 11,
+    marginTop: 3,
+    fontFamily: Fonts.PoppinsRegular,
+  },
+  activeCircle: {
+    width: 45,
+    height: 45,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  centerWrapper: {
+    top: -30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  centerButton: {
+    width: 65,
+    height: 65,
+    borderRadius: 35,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  plus: {
+    fontSize: 32,
+    color: "#fff",
+    fontWeight: "bold",
+    marginBottom: 2,
   },
 });
+
+export default BottomTab;

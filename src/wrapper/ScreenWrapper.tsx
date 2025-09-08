@@ -32,6 +32,7 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
         { backgroundColor, paddingTop: StatusBar.currentHeight || 0 },
       ]}
     >
+    <StatusBar barStyle="dark-content" backgroundColor={backgroundColor} />
       {children}
     </RNSafeAreaView>
   );

@@ -12,7 +12,9 @@ import {
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import Clipboard from "@react-native-clipboard/clipboard";
 import ScreenWrapper from "../../wrapper/ScreenWrapper";
-import { Category, Quote, quotesData } from "../../json/quotesData"; // ✅ import JSON
+import { Quote, quotesData } from "../../json/quotesData"; // legacy
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const quotesGenerated = require("../../json/quotesGenerated.json");
 import CopySvg from "../../assets/copy.svg";
 import BackSvg from "../../assets/arrowback.svg";
 import ShareSvg from "../../assets/share.svg";
@@ -20,7 +22,7 @@ import HeartSvg from "../../assets/heartsvg.svg";
 import { Fonts } from "../../utils/fonts";
 
 const QuotesScreen = () => {
-  const route = useRoute<RouteProp<{ params: { category: Category } }, "params">>();
+  const route = useRoute<RouteProp<{ params: { category: string } }, "params">>();
 const { category } = route?.params;
 
 const [search, setSearch] = useState("");
@@ -28,7 +30,8 @@ const [favorites, setFavorites] = useState<string[]>([]);
 
 const navigation = useNavigation()
 
-const allQuotes: Quote[] = quotesData[category]; // ✅ now TypeScript is happy
+// Prefer generated quotes if available; fallback to legacy static data
+const allQuotes: Quote[] = (quotesGenerated[category] as Quote[]) ?? quotesData[category] ?? [];
 const filteredQuotes = allQuotes.filter((q) =>
   q.text.toLowerCase().includes(search.toLowerCase())
 );
